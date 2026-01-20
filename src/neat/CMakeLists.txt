@@ -1,4 +1,6 @@
-add_library(neat STATIC)
+add_library(neat STATIC
+        phenotype/Node.h
+        phenotype/Connection.h)
 
 target_sources(neat PRIVATE
         phenotype/Network.cpp
