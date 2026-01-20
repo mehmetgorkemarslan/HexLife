@@ -10,6 +10,8 @@ add_subdirectory(src/neat)
 
 add_executable(HexLife
         src/main.cpp
+        src/Logger.cpp
+        include/Logger.h
 )
 
-target_link_libraries(HexLife PRIVATE neat map_gen)
+target_link_libraries(HexLife PRIVATE neat)
