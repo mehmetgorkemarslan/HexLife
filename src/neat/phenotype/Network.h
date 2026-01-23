@@ -1,8 +1,10 @@
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 #include "Node.h"
 #include "Connection.h"
+#include  "genotype/Genome.h"
 
 namespace neat {
     class Network {
@@ -10,15 +12,24 @@ namespace neat {
         // Constructors
         Network() = default;
         Network(std::vector<Node> const& nodes_, std::vector<Connection> const& connections_) noexcept;
+        Network construct_from_genome(Genome const& genome);
 
-        void set_inputs(std::vector<double> const& input_values);
+        // Destructor
+        ~Network() = default;
+
+        void set_inputs(std::unordered_map<int, double> const& input_values);
         void activate();
         void deactivate();
 
-        std::vector<double> get_outputs() const;
+        std::vector<double> get_outputs();
 
     private:
         std::vector<Node> nodes;
         std::vector<Connection> connections;
+
+        std::unordered_map<int, int> id_to_idx;
+        std::vector<std::vector<int>> layers;
+        std::vector<std::vector<int>> conn_indices;
+
     };
 } // namespace neat
