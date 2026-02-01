@@ -5,6 +5,9 @@
 // TODO: Create a test class
 void LoggerTest() {
     Logger::Log(LogLevel::ERROR, "Error deneme");
+    Logger::Log(LogLevel::DEBUG, "this message is buffered");
+    Logger::Log(LogLevel::INFO, "This message too");
+    Logger::Log(LogLevel::FATAL, "This prints directly");
 }
 
 void MapGenTest() {
@@ -22,6 +25,9 @@ int main() {
 
     LoggerTest();
     MapGenTest();
+
+    // Flush Buffer at end of every loop
+    Logger::FlushBuffer();
 
     std::cout << "\nPress Enter to exit...";
     std::cin.get();
