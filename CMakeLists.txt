@@ -10,8 +10,8 @@ add_subdirectory(src/mapGen)
 
 add_executable(HexLife
         src/main.cpp
-        src/Logger.cpp
-        include/Logger.h
+        src/utils/Logger.cpp
+        src/utils/Config.cpp
 )
 
 target_include_directories(HexLife PRIVATE include)

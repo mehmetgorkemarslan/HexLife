@@ -1,4 +1,4 @@
-﻿#include "../include/Logger.h"
+﻿#include "Logger.h"
 #include <iostream>
 
 void Logger::Init(const std::string &filename) {
