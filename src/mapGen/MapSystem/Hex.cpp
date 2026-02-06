@@ -1,5 +1,6 @@
 ﻿#include "Hex.h"
 #include <stdexcept>
+#include <cmath>
 #include "Logger.h"
 
 namespace mapGen {
@@ -51,6 +52,12 @@ namespace mapGen {
                 break;
         }
         return {h.q + dQ, h.r + dR, h.s + dS};
+    }
+
+    Vector2 Hex::toCartesian(const Hex &h) {
+        float x = (std::sqrt(3.0f) * h.q + std::sqrt(3.0f) / 2.0f * h.r);
+        float y = (3.0f / 2.0f * h.r);
+        return {x, y};
     }
 
     std::size_t HexHash::operator()(const Hex &h) const {

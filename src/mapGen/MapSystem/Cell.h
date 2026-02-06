@@ -1,44 +1,29 @@
 ﻿#pragma once
-#include <cstdint>
 #include <vector>
 #include <sstream>
+#include "Common.h"
 
 namespace mapGen {
     /**
      * @brief Forward declaration for Entity.
-     *
-     * Represents a small actor or object that can occupy a Cell.
-     * Full definition is provided elsewhere.
+     * @details Represents an actor or object that can occupy a Cell; full definition is elsewhere.
      */
     class Entity;
 
-    /**
-     * @brief Temporary biome classification for cells.
-     *
-     * These values provide a simple terrain categorization used for
-     * visualization and simple behavior decisions during generation.
-     */
-    enum class BiomeType: uint8_t {
-        OCEAN,
-        DESERT,
-        FOREST,
-        VALLEY,
-        MOUNTAIN
-    };
 
     /**
      * @brief Represents a single hex grid cell and its contents.
-     *
-     * Holds a biome type, a list of entities present in the cell, and
-     * helper methods to manage entities and produce a textual representation
-     * for logging or debugging.
+     * @details Stores biome, environmental properties and a list of entity pointers.
+     *          Methods manage entities and provide simple textual representation.
      */
     struct Cell {
+        /** @brief Primary biome classification for this cell. */
         BiomeType biome;
 
-        // Other variables going to here
-
         std::vector<Entity *> entities;
+
+        float temperature = 0.0f;
+        float moisture = 0.0f;
 
         /**
          * @brief Add an entity pointer to this cell.
@@ -60,12 +45,27 @@ namespace mapGen {
          */
         void removeEntity(Entity *entity);
 
+
+        /**
+         * @brief Return number of entities currently stored in this cell.
+         * @returns Count of entities.
+         */
+        int getEntityCount() const;
+
+        /**
+         * @brief Set the biome type for this cell.
+         * @param biome New biome type to assign.
+         */
+        void setBiome(BiomeType biome);
+
+        /**
+         * @brief Get the biome type assigned to this cell.
+         * @returns Current BiomeType for the cell.
+         */
+        BiomeType getBiome() const;
+
         /**
          * @brief Append a short textual representation of the cell to the given stringstream.
-         *
-         * Used for logging or simple ASCII visualization. Implementations typically
-         * include biome information and a marker if entities are present.
-         *
          * @param ss Destination stringstream where the representation is appended.
          */
         void getRepresentation(std::stringstream &ss);

@@ -9,8 +9,19 @@ namespace mapGen {
         this->entities.erase(std::ranges::find(entities, entity));
     }
 
+    int Cell::getEntityCount() const {
+        return entities.size();
+    }
+
+    void Cell::setBiome(BiomeType biome) {
+        this->biome = biome;
+    }
+
+    BiomeType Cell::getBiome() const {
+        return this->biome;
+    }
+
     void Cell::getRepresentation(std::stringstream &ss) {
-        // TODO: change with biome, is there any enitiy
-        ss << "[C] " ;
+        ss << "[" << (int) (temperature * 100) << "-" << (int) (moisture * 100) << "] ";
     }
 }
