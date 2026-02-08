@@ -16,7 +16,6 @@ The simulation consists of a procedurally generated hexagonal world. Entities (o
 ##  Technical Stack
 - **Language:** C++20
 - **Math:** Custom Hexagonal Math & Linear Algebra for Neural Networks.
-- **Randomness:** Mersenne Twister (std::mt19937) for deterministic seeding.
 
 ## Getting Started
 
@@ -29,7 +28,7 @@ The simulation consists of a procedurally generated hexagonal world. Entities (o
 mkdir build && cd build
 cmake ..
 make
-./HexLife
+./HexLife config.json
 ```
 ## Road Map
 - [ ] Implement Cube Coordinate Hex System
