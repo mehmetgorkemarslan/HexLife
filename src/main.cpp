@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <format>
 
 #include "Config.h"
 #include "Logger.h"
@@ -45,18 +46,28 @@ void MapGenTest() {
     auto *grid = new mapGen::HexGrid();
     auto* wordManager = new mapGen::WorldManager(grid);
 
-    grid->generateWorld(Config::get<int>("map_radius"));
+    grid->generateWorld(Config::get<int>("map", "radius"));
     wordManager->addBiomes();
 
-    // mapGen::MapVisualizer::DisplayAllGrid(*grid);
-    mapGen::MapVisualizer::exportToPNG(*grid, "Map.png");
+    int octave = Config::get<int>("noise", "octave");
+    float scaleTemp = Config::get<float>("noise", "scale_temp");
+    float scaleMoist = Config::get<float>("noise", "scale_moist");
+
+    mapGen::MapVisualizer::exportToPNG(*grid, std::format("Map_{}o_{}t_{}m.png", octave, scaleTemp, scaleMoist));
 
     delete grid;
+    delete wordManager;
 }
 
-int main() {
-    Config::load();
-    Logger::Init(Config::get<std::string>("log_file_name"));
+int main(int argc, char* argv[]) {
+    std::string configPath = "config.json";
+    if (argc > 1) {
+        configPath = argv[1];
+    }
+    Config::load(configPath);
+
+    Logger::Init(Config::get<std::string>("system", "log_file"));
+    Logger::Log(LogLevel::INFO, "Using config file: " + configPath);
 
     // NoiseSystemTest();
     MapGenTest();

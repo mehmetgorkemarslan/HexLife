@@ -10,6 +10,8 @@ namespace mapGen {
     }
 
     float PerlinNoise::sample(float x, float y) const {
+        static auto minStretch = Config::get<float>("noise", "stretch_min");
+        static auto maxStretch = Config::get<float>("noise", "stretch_max");
         float total = 0.0f;
         float freq = 1.0f;
         float amplitude = 1.0f;
@@ -23,7 +25,7 @@ namespace mapGen {
             freq *= lacunarity;
         }
 
-        return smoothstep(Config::get<float>("stretch_min"), Config::get<float>("stretch_max"),
+        return smoothstep(minStretch, maxStretch,
                           (total / maxValue + 1.0f) / 2.0f);
     }
 

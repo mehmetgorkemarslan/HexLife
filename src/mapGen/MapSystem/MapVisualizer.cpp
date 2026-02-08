@@ -101,10 +101,15 @@ namespace mapGen {
 
         std::vector<unsigned char> image(canvasWidth * canvasHeight * 3, 0);
         // Background color
-        int bg = Config::get<int>("background_color");
-        unsigned char bgc = static_cast<unsigned char>(bg);
-        image.assign(image.size(), bgc);
-
+        auto bgc = Config::getInnerSection("visuals", "colors").at("background_color");
+        unsigned char bgcR = bgc.at(0).get<unsigned char>();
+        unsigned char bgcG = bgc.at(1).get<unsigned char>();
+        unsigned char bgcB = bgc.at(2).get<unsigned char>();
+        for (int i = 0; i < image.size(); i) {
+            image[i++] = bgcR;
+            image[i++] = bgcG;
+            image[i++] = bgcB;
+        }
 
         // Render Loop
         for (const auto &[hex, cell]: map) {
@@ -141,7 +146,7 @@ namespace mapGen {
 
         float sizeBias = size + 0.6f;
 
-        int hex_border_darkness = Config::get<int>("hex_border_darkness");
+        int hex_border_darkness = Config::get<int>("visuals", "hex_border_darkness");
         for (int y = startY; y < endY; y++) {
             for (int x = startX; x < endX; x++) {
                 float dx = std::abs(x - cx);
@@ -172,37 +177,22 @@ namespace mapGen {
     }
 
     MapVisualizer::Color MapVisualizer::getBiomeColor(BiomeType type) {
+        static auto colors = Config::getInnerSection("visuals", "colors");
+        auto color = colors.at("error");
+        // TODO: bu kısımı cacle. Her seferinde baştan bakmakla uğraşmasın
+        //  şuan her hexagon için tek tek giriyo
         switch (type) {
-            case BiomeType::POLAR: return {
-                    static_cast<unsigned char>(Config::get<int>("Polar_Color_r")),
-                    static_cast<unsigned char>(Config::get<int>("Polar_Color_g")),
-                    static_cast<unsigned char>(Config::get<int>("Polar_Color_b"))
-                };
-            case BiomeType::PLAINS: return {
-                    static_cast<unsigned char>(Config::get<int>("Plains_Color_r")),
-                    static_cast<unsigned char>(Config::get<int>("Plains_Color_g")),
-                    static_cast<unsigned char>(Config::get<int>("Plains_Color_b"))
-                };
-            case BiomeType::FOREST: return {
-                    static_cast<unsigned char>(Config::get<int>("Forest_Color_r")),
-                    static_cast<unsigned char>(Config::get<int>("Forest_Color_g")),
-                    static_cast<unsigned char>(Config::get<int>("Forest_Color_b"))
-                };
-            case BiomeType::DESERT: return {
-                    static_cast<unsigned char>(Config::get<int>("Desert_Color_r")),
-                    static_cast<unsigned char>(Config::get<int>("Desert_Color_g")),
-                    static_cast<unsigned char>(Config::get<int>("Desert_Color_b"))
-                };
-            case BiomeType::JUNGLE: return {
-                    static_cast<unsigned char>(Config::get<int>("Jungle_Color_r")),
-                    static_cast<unsigned char>(Config::get<int>("Jungle_Color_g")),
-                    static_cast<unsigned char>(Config::get<int>("Jungle_Color_b"))
-                };
-            default: return {
-                    static_cast<unsigned char>(Config::get<int>("Default_Color")),
-                    static_cast<unsigned char>(Config::get<int>("Default_Color")),
-                    static_cast<unsigned char>(Config::get<int>("Default_Color"))
-                };
-        };
+            case BiomeType::POLAR: color = colors.at("polar");
+                break;
+            case BiomeType::PLAINS: color = colors.at("plains");
+                break;
+            case BiomeType::FOREST: color = colors.at("forest");
+                break;
+            case BiomeType::DESERT: color = colors.at("desert");
+                break;
+            case BiomeType::JUNGLE: color = colors.at("jungle");
+                break;
+        }
+        return {color.at(0).get<unsigned char>(), color.at(1).get<unsigned char>(), color.at(2).get<unsigned char>()};
     }
 }

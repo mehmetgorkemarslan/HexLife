@@ -43,4 +43,7 @@
 .idea/*
 build/
 
+.github/
+
 TODO.md
+*.log

@@ -1,0 +1,65 @@
+﻿{
+  "system": {
+    "log_file": "hexLife.log"
+  },
+  "map": {
+    "radius": 50
+  },
+  "noise": {
+    "seed_temp": 11387,
+    "seed_moist": 588487,
+    "octave": 4,
+    "persistence": 0.5,
+    "lacunarity": 2.0,
+    "scale_temp": 0.022,
+    "scale_moist": 0.0275,
+    "stretch_min": 0.15,
+    "stretch_max": 0.85
+  },
+  "biome": {
+    "max_polar_temp": 0.3,
+    "max_warm_temp": 0.64,
+    "max_plain_moist": 0.55,
+    "max_desert_moist": 0.46
+  },
+  "visuals": {
+    "hex_border_darkness": 20,
+    "colors": {
+      "background_color": [
+        0,
+        0,
+        56
+      ],
+      "polar": [
+        230,
+        245,
+        255
+      ],
+      "plains": [
+        170,
+        200,
+        100
+      ],
+      "forest": [
+        34,
+        139,
+        34
+      ],
+      "desert": [
+        240,
+        210,
+        130
+      ],
+      "jungle": [
+        20,
+        100,
+        80
+      ],
+      "error": [
+        255,
+        20,
+        255
+      ]
+    }
+  }
+}

@@ -7,16 +7,17 @@
 
 namespace mapGen {
     WorldManager::WorldManager(HexGrid *grid) : targetGrid(grid) {
-        tSeed = Config::get<int>("seed_temp");
-        mSeed = Config::get<int>("seed_moist");
+        auto noiseSettings = Config::getSection("noise");
+        tSeed = noiseSettings.at("seed_temp").get<int>();
+        mSeed = noiseSettings.at("seed_moist").get<int>();
 
         // Offset based on seed and random numbers
         tOffset = (float) (tSeed % 10000) * 203.921f;
         mOffset = (float) (mSeed % 10000) * 465.643f;
 
-        int octave = Config::get<int>("noise_octave");
-        float persistence = Config::get<float>("noise_persistence");
-        float lacunarity = Config::get<float>("noise_lacunarity");
+        int octave = noiseSettings.at("octave").get<int>();
+        float persistence = noiseSettings.at("persistence").get<float>();
+        float lacunarity = noiseSettings.at("lacunarity").get<float>();
 
         tempNoise = std::make_unique<PerlinNoise>(tSeed, octave, persistence, lacunarity);
         moistureNoise = std::make_unique<PerlinNoise>(mSeed, octave, persistence, lacunarity);
@@ -26,8 +27,8 @@ namespace mapGen {
         if (!targetGrid) return;
 
         // Scale attributes for distributions
-        float tScale = Config::get<float>("scale_temp");
-        float mScale = Config::get<float>("scale_moist");
+        float tScale = Config::get<float>("noise", "scale_temp");
+        float mScale = Config::get<float>("noise", "scale_moist");
 
         Logger::Log(LogLevel::DEBUG, "Adding biomes to world...");
 
