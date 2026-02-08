@@ -2,6 +2,7 @@
 #include "Logger.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "BiomeHandler.h"
 #include "stb_image_write.h"
 
 #include "Config.h"
@@ -78,8 +79,8 @@ namespace mapGen {
         if (map.empty()) return;
 
         // Settings
-        const float HEX_SIZE = 24.0f;
-        const float SQRT3 = 1.7320508f;
+        const float HEX_SIZE = Config::get<float>("visuals", "hex_size");
+        constexpr float SQRT3 = 1.7320508f;
         const float HEX_WIDTH = SQRT3 * HEX_SIZE;
         const float HEX_HEIGHT = 2.0f * HEX_SIZE;
 
@@ -99,16 +100,16 @@ namespace mapGen {
         float offsetX = -minPixelX + HEX_WIDTH * 1.25f;
         float offsetY = -minPixelY + HEX_HEIGHT * 1.25f;
 
-        std::vector<unsigned char> image(canvasWidth * canvasHeight * 3, 0);
+        std::vector<uint8_t> image(canvasWidth * canvasHeight * 3, 0);
         // Background color
-        auto bgc = Config::getInnerSection("visuals", "colors").at("background_color");
-        unsigned char bgcR = bgc.at(0).get<unsigned char>();
-        unsigned char bgcG = bgc.at(1).get<unsigned char>();
-        unsigned char bgcB = bgc.at(2).get<unsigned char>();
-        for (int i = 0; i < image.size(); i) {
-            image[i++] = bgcR;
-            image[i++] = bgcG;
-            image[i++] = bgcB;
+        auto bgc = Config::getSection("visuals", "colors").at("background_color");
+        uint8_t bgcR = bgc.at(0).get<uint8_t>();
+        uint8_t bgcG = bgc.at(1).get<uint8_t>();
+        uint8_t bgcB = bgc.at(2).get<uint8_t>();
+        for (int i = 0; i < static_cast<int>(image.size()); i += 3) {
+            image[i]     = bgcR;
+            image[i + 1] = bgcG;
+            image[i + 2] = bgcB;
         }
 
         // Render Loop
@@ -116,7 +117,7 @@ namespace mapGen {
             float cx = (HEX_SIZE * SQRT3 * (hex.q + hex.r / 2.0f)) + offsetX;
             float cy = (HEX_SIZE * 1.5f * hex.r) + offsetY;
 
-            Color c = getBiomeColor(cell.biome);
+            Color c = BiomeHandler::getBiomeById(cell.getBiomeID()).getColor();
             // Draw Hexagon
             drawHexagon(image, canvasWidth, canvasHeight, cx, cy, HEX_SIZE, c);
         }
@@ -130,7 +131,7 @@ namespace mapGen {
         }
     }
 
-    void MapVisualizer::drawHexagon(std::vector<unsigned char> &image, int imgWidth, int imgHeight,
+    void MapVisualizer::drawHexagon(std::vector<uint8_t> &image, int imgWidth, int imgHeight,
                                     float cx, float cy, float size, Color color) {
         const float SQRT3 = 1.7320508f;
         float borderSize = 2.0f;
@@ -146,7 +147,7 @@ namespace mapGen {
 
         float sizeBias = size + 0.6f;
 
-        int hex_border_darkness = Config::get<int>("visuals", "hex_border_darkness");
+        int hex_border_darkness = Config::get<uint8_t>("visuals", "hex_border_darkness");
         for (int y = startY; y < endY; y++) {
             for (int x = startX; x < endX; x++) {
                 float dx = std::abs(x - cx);
@@ -162,9 +163,9 @@ namespace mapGen {
                     float distToDiagonal = size - (dy + dx * 0.57735f);
 
                     if (distToVertical < borderSize || distToDiagonal < borderSize) {
-                        image[index] = (unsigned char) (color.r - hex_border_darkness);
-                        image[index + 1] = (unsigned char) (color.g - hex_border_darkness);
-                        image[index + 2] = (unsigned char) (color.b - hex_border_darkness);
+                        image[index] = color.r - hex_border_darkness;
+                        image[index + 1] = color.g - hex_border_darkness;
+                        image[index + 2] = color.b - hex_border_darkness;
                     } else {
                         // Biome Color
                         image[index] = color.r;
@@ -174,25 +175,5 @@ namespace mapGen {
                 }
             }
         }
-    }
-
-    MapVisualizer::Color MapVisualizer::getBiomeColor(BiomeType type) {
-        static auto colors = Config::getInnerSection("visuals", "colors");
-        auto color = colors.at("error");
-        // TODO: bu kısımı cacle. Her seferinde baştan bakmakla uğraşmasın
-        //  şuan her hexagon için tek tek giriyo
-        switch (type) {
-            case BiomeType::POLAR: color = colors.at("polar");
-                break;
-            case BiomeType::PLAINS: color = colors.at("plains");
-                break;
-            case BiomeType::FOREST: color = colors.at("forest");
-                break;
-            case BiomeType::DESERT: color = colors.at("desert");
-                break;
-            case BiomeType::JUNGLE: color = colors.at("jungle");
-                break;
-        }
-        return {color.at(0).get<unsigned char>(), color.at(1).get<unsigned char>(), color.at(2).get<unsigned char>()};
     }
 }

@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <format>
 
+#include "BiomeHandler.h"
 #include "Config.h"
 #include "Logger.h"
 #include "HexGrid.h"
@@ -46,7 +47,9 @@ void MapGenTest() {
     auto *grid = new mapGen::HexGrid();
     auto* wordManager = new mapGen::WorldManager(grid);
 
+
     grid->generateWorld(Config::get<int>("map", "radius"));
+    mapGen::BiomeHandler::loadBiomes();
     wordManager->addBiomes();
 
     int octave = Config::get<int>("noise", "octave");

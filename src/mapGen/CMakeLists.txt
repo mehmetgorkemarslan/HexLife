@@ -15,6 +15,7 @@
 
         # --- Environment ---
         Environment/BiomeHandler.h
+        Environment/Biome.h
 )
 
 target_sources(mapGen PRIVATE
@@ -30,6 +31,7 @@ target_sources(mapGen PRIVATE
 
         # --- Environment ---
         Environment/BiomeHandler.cpp
+        Environment/Biome.cpp
 )
 
 target_include_directories(mapGen

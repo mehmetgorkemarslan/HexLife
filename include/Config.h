@@ -52,6 +52,26 @@ public:
         }
     }
 
+    /**
+     * @brief Retrieve a typed value from the configuration.
+     * @param section Top-level JSON section name.
+     * @param inSection Inner JSON section name.
+     * @param key Key inside the section.
+     * @return The requested value as type T. Returns default-constructed T on error.
+     * @details On any lookup or conversion error this method logs an error and returns T().
+     */
+    template<typename T>
+    static T get(const std::string &section, const std::string &inSection, const std::string &key) {
+        try {
+            return getInstance()._data.at(section).at(inSection).at(key).get<T>();
+        } catch (...) {
+            Logger::Log(LogLevel::ERROR,
+                        std::format("[Config] {}.{}.{} can not find. Returning default value", section, inSection,
+                                    key));
+            return T();
+        }
+    }
+
     // auto mapSettings = Config::getSection("map");
     // int radius = mapSettings.at("radius").get<int>();
     /**
@@ -77,12 +97,29 @@ public:
      * @param inSec Inner section name within outSec.
      * @return A json object representing the inner section, or empty json on error.
      */
-    static json getInnerSection(const std::string &outSec, const std::string &inSec) {
+    static json getSection(const std::string &outSec, const std::string &inSec) {
         try {
             return getInstance()._data.at(outSec).at(inSec);
         } catch (...) {
             Logger::Log(LogLevel::ERROR,
                         std::format("[Config] section {}.{} can not find. Returning empty json", outSec, inSec));
+            return {};
+        }
+    }
+
+    /**
+     * @brief Retrieve an inner JSON subsection from a top-level section.
+     * @param outSec Top-level section name.
+     * @param inSec Inner section name within outSec.
+     * @param innerSec Inner section name within inSec.
+     * @return A json object representing the inner section, or empty json on error.
+     */
+    static json getSection(const std::string &outSec, const std::string &inSec, const std::string &innerSec) {
+        try {
+            return getInstance()._data.at(outSec).at(inSec).at(innerSec);
+        } catch (...) {
+            Logger::Log(LogLevel::ERROR,
+                        std::format("[Config] section {}.{}.{} can not find. Returning empty json", outSec, inSec, innerSec));
             return {};
         }
     }

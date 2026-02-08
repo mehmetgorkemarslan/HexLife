@@ -1,22 +1,53 @@
 ﻿#include "BiomeHandler.h"
-#include "Config.h"
 
 namespace mapGen {
-    BiomeType BiomeHandler::getBiome(float temperature, float moisture) {
-        if (temperature < Config::get<float>("biome", "max_polar_temp")) {
-            return BiomeType::POLAR;
+    void BiomeHandler::loadBiomes() {
+        // Clear one before. Just in case
+        getInstance().biomes.clear();
+        getInstance().nameToId.clear();
+
+        auto biomesConfig = Config::getSection("biome", "types");
+
+        BiomeID currentID = 0;
+
+        for (auto &[key, value]: biomesConfig.items()) {
+            Color c = getColor(value);
+            BiomeStats bs = getBiomeStats(value);
+
+            Biome newBiome(currentID, key, c, bs);
+            getInstance().biomes.push_back(newBiome);
+            getInstance().nameToId[key] = currentID;
+            currentID++;
+        }
+    }
+
+    BiomeID BiomeHandler::calculateBiomeID(float temperature, float moisture) {
+        // Cache for performance
+        static BiomeID polarID = getBiomeIdByName("polar");
+        static BiomeID plainsID = getBiomeIdByName("plains");
+        static BiomeID forestID = getBiomeIdByName("forest");
+        static BiomeID desertID = getBiomeIdByName("desert");
+        static BiomeID jungleID = getBiomeIdByName("jungle");
+
+        static float tempPolar = Config::get<float>("biome", "thresholds", "max_polar_temp");
+        static float tempWarm = Config::get<float>("biome", "thresholds", "max_warm_temp");
+        static float moistPlain = Config::get<float>("biome", "thresholds", "max_plain_moist");
+        static float moistDesert = Config::get<float>("biome", "thresholds", "max_desert_moist");
+
+        if (temperature < tempPolar) {
+            return polarID;
         }
 
-        if (temperature < Config::get<float>("biome", "max_warm_temp")) {
-            if (moisture < Config::get<float>("biome", "max_plain_moist")) {
-                return BiomeType::PLAINS;
+        if (temperature < tempWarm) {
+            if (moisture < moistPlain) {
+                return plainsID;
             }
-            return BiomeType::FOREST;
+            return forestID;
         }
 
-        if (moisture < Config::get<float>("biome", "max_desert_moist")) {
-            return BiomeType::DESERT;
+        if (moisture < moistDesert) {
+            return desertID;
         }
-        return BiomeType::JUNGLE;
+        return jungleID;
     }
 }

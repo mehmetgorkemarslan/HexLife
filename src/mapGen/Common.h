@@ -2,19 +2,7 @@
 #include <cstdint>
 
 namespace mapGen {
-    /**
-     * @brief Biome classification for cells.
-     *
-     * These values provide a simple terrain categorization used for
-     * visualization and simple behavior decisions during generation.
-     */
-    enum class BiomeType: uint8_t {
-        POLAR,
-        PLAINS,
-        FOREST,
-        DESERT,
-        JUNGLE
-    };
+    using BiomeID = uint8_t;
 
     struct Vector2 {
         float x;
@@ -45,5 +33,15 @@ namespace mapGen {
         HexDirection::LEFT,
         HexDirection::TOP_LEFT,
         HexDirection::TOP_RIGHT
+    };
+
+    struct Color {
+        uint8_t r, g, b;
+
+    };
+
+    struct BiomeStats {
+        float movementCost = 1.0f;
+        float fertility = 0.5f;
     };
 }

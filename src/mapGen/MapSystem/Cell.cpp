@@ -13,11 +13,11 @@ namespace mapGen {
         return entities.size();
     }
 
-    void Cell::setBiome(BiomeType biome) {
+    void Cell::setBiome(BiomeID biome) {
         this->biome = biome;
     }
 
-    BiomeType Cell::getBiome() const {
+    BiomeID Cell::getBiomeID() const {
         return this->biome;
     }
 

@@ -18,7 +18,7 @@ namespace mapGen {
      */
     struct Cell {
         /** @brief Primary biome classification for this cell. */
-        BiomeType biome;
+        BiomeID biome;
 
         std::vector<Entity *> entities;
 
@@ -54,15 +54,15 @@ namespace mapGen {
 
         /**
          * @brief Set the biome type for this cell.
-         * @param biome New biome type to assign.
+         * @param biome New biome Id to assign.
          */
-        void setBiome(BiomeType biome);
+        void setBiome(BiomeID biome);
 
         /**
          * @brief Get the biome type assigned to this cell.
-         * @returns Current BiomeType for the cell.
+         * @returns Current BiomeID for the cell.
          */
-        BiomeType getBiome() const;
+        BiomeID getBiomeID() const;
 
         /**
          * @brief Append a short textual representation of the cell to the given stringstream.

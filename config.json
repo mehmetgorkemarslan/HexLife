@@ -17,48 +17,79 @@
     "stretch_max": 0.85
   },
   "biome": {
-    "max_polar_temp": 0.3,
-    "max_warm_temp": 0.64,
-    "max_plain_moist": 0.55,
-    "max_desert_moist": 0.46
+    "thresholds": {
+      "max_polar_temp": 0.3,
+      "max_warm_temp": 0.64,
+      "max_plain_moist": 0.55,
+      "max_desert_moist": 0.46
+    },
+    "note": "Need 2 parameter, 1 color and 1 stat. Stats count must match MapGen/Common.h/BiomeStats. Order must be same",
+    "types": {
+      "polar": {
+        "color": [
+          230,
+          245,
+          255
+        ],
+        "stats": {
+          "movement_cost": 1.5,
+          "fertility": 0.0
+        }
+      },
+      "plains": {
+        "color": [
+          170,
+          200,
+          100
+        ],
+        "stats": {
+          "movement_cost": 1.0,
+          "fertility": 1.0
+        }
+      },
+      "forest": {
+        "color": [
+          34,
+          139,
+          34
+        ],
+        "stats": {
+          "movement_cost": 1.2,
+          "fertility": 0.8
+        }
+      },
+      "desert": {
+        "color": [
+          240,
+          210,
+          130
+        ],
+        "stats": {
+          "movement_cost": 1.1,
+          "fertility": 0.1
+        }
+      },
+      "jungle": {
+        "color": [
+          20,
+          100,
+          80
+        ],
+        "stats": {
+          "movement_cost": 2.0,
+          "fertility": 0.6
+        }
+      }
+    }
   },
   "visuals": {
     "hex_border_darkness": 20,
+    "hex_size" : 24.0,
     "colors": {
       "background_color": [
         0,
         0,
         56
-      ],
-      "polar": [
-        230,
-        245,
-        255
-      ],
-      "plains": [
-        170,
-        200,
-        100
-      ],
-      "forest": [
-        34,
-        139,
-        34
-      ],
-      "desert": [
-        240,
-        210,
-        130
-      ],
-      "jungle": [
-        20,
-        100,
-        80
-      ],
-      "error": [
-        255,
-        20,
-        255
       ]
     }
   }

@@ -37,7 +37,7 @@ namespace mapGen {
             cell.temperature = tempNoise->sample((pos.x + tOffset) * tScale, (pos.y + tOffset) * tScale);
             cell.moisture = moistureNoise->sample((pos.x + mOffset) * mScale, (pos.y + mOffset) * mScale);
             // Get biome
-            cell.biome = BiomeHandler::getBiome(cell.temperature, cell.moisture);
+            cell.biome = BiomeHandler::calculateBiomeID(cell.temperature, cell.moisture);
         }
 
         Logger::Log(LogLevel::DEBUG, "Adding biome done");
