@@ -28,7 +28,7 @@ The simulation consists of a procedurally generated hexagonal world. Entities (o
 mkdir build && cd build
 cmake ..
 make
-./HexLife config.json
+./HexLife ../config.json
 ```
 ## Road Map
 - [ ] Implement Cube Coordinate Hex System
