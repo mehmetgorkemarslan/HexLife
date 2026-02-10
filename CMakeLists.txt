@@ -4,8 +4,8 @@ project(HexLife VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Can not compile Neat. There is 2 NodeType enum. One in Gene other in Node
-#add_subdirectory(src/neat)
+# Can not compile Neat. There are 2 NodeType enum. One in Gene other in Node
+add_subdirectory(src/neat)
 add_subdirectory(src/mapGen)
 
 add_executable(HexLife

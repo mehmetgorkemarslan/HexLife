@@ -18,7 +18,7 @@ namespace neat {
     void Network::set_inputs(std::unordered_map<int, double> const& input_values) {
         for (auto const& [node_id, value] : input_values) {
             Node& node = nodes[id_to_idx[node_id]];
-            if (node.type == INPUT) {
+            if (node.type == NodeType::INPUT) {
                 node.output = value;
             }
         }
@@ -29,7 +29,7 @@ namespace neat {
             for (int node_id : layer) {
                 Node& node = nodes[id_to_idx[node_id]];
 
-                if (node.type == INPUT) {
+                if (node.type == NodeType::INPUT) {
                     continue;
                 }
 
@@ -46,7 +46,7 @@ namespace neat {
 
     void Network::deactivate() {
         for (Node& node: nodes) {
-            if (node.type != INPUT) {
+            if (node.type != NodeType::INPUT) {
                 node.input_sum = 0; node.output = 0;
             }
         }

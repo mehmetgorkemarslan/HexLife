@@ -1,13 +1,9 @@
 #pragma once
 #include <vector>
 
-namespace neat {
+#include "../genotype/Gene.h"
 
-    enum NodeType {
-        INPUT,
-        HIDDEN,
-        OUTPUT
-    };
+namespace neat {
 
     struct Node {
         int id = -1;
@@ -15,7 +11,7 @@ namespace neat {
         double input_sum = 0.0;
         double output = 0.0;
         double bias = 0.0;
-        NodeType type = INPUT;
+        NodeType type = NodeType::INPUT;
 
         // Constructors
         Node() = default;
