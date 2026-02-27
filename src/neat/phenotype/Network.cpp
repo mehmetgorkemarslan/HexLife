@@ -64,7 +64,7 @@ namespace neat {
         std::unordered_map<int, int> id_to_idx;
         for (const NodeGene& node : genome.nodes) {
             id_to_idx[node.id] = nodes.size();
-            nodes.emplace_back(node.id, 0.0); // Bias is set to 0.0
+            nodes.emplace_back(node.id);
             nodes.back().type = node.type;
         }
         for (const ConnectionGene& connection : genome.connections) {
@@ -115,7 +115,7 @@ namespace neat {
                         curr_sum += nodes[in_idx].output * conn.weight;
                     }
                 }
-                node.output = std::tanh(curr_sum + node.bias);
+                node.output = std::tanh(curr_sum);
                 node.input_sum = curr_sum;
             }
         }

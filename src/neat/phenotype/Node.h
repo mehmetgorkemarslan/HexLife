@@ -10,12 +10,11 @@ namespace neat {
         // int layer = -1;
         double input_sum = 0.0;
         double output = 0.0;
-        double bias = 0.0;
         NodeType type = NodeType::INPUT;
 
         // Constructors
         Node() = default;
-        Node(int id_, double bias_) : id(id_), bias(bias_) {}
+        Node(int id_) : id(id_) {}
 
         // Destructor
         ~Node() = default;
