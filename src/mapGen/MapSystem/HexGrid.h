@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <unordered_map>
 #include "Hex.h"
 #include "Cell.h"
@@ -70,5 +70,6 @@ namespace mapGen {
            @details Allows external inspection or bulk operations; modifications affect the grid.
         */
         std::unordered_map<Hex, Cell, HexHash> &getMap();
+        const std::unordered_map<Hex, Cell, HexHash> &getMap() const;
     };
 }

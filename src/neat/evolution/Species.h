@@ -1,11 +1,16 @@
 #pragma once
 
-#include <vector>
 #include "../genotype/Genome.h"
+#include <vector>
+
+namespace eco {
+	class Entity;
+}
 
 namespace neat {
-    struct Species {
-        std::vector<Genome> genomes;
-        Genome representative;
-    };
-}
+	struct Species {
+		int id;
+		std::vector<eco::Entity*> members;
+		Genome representative;
+	};
+} // namespace neat

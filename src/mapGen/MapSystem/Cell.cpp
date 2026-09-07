@@ -1,12 +1,15 @@
-﻿#include "Cell.h"
+#include "Cell.h"
 
 namespace mapGen {
-    void Cell::addEntity(Entity *entity) {
+    void Cell::addEntity(eco::Entity *entity) {
         this->entities.push_back(entity);
     }
 
-    void Cell::removeEntity(Entity *entity) {
-        this->entities.erase(std::ranges::find(entities, entity));
+    void Cell::removeEntity(eco::Entity *entity) {
+        auto it = std::ranges::find(entities, entity);
+        if (it != entities.end()) {
+            this->entities.erase(it);
+        }
     }
 
     int Cell::getEntityCount() const {

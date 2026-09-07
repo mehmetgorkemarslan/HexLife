@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <format>
 
 #include "BiomeHandler.h"
@@ -9,6 +9,7 @@
 #include "PerlinNoise.h" // For perlin noise test
 #include "WorldManager.h"
 // TODO: Create a test class
+#include "Test.h"
 
 void NoiseSystemTest() {
     Logger::Log(LogLevel::INFO, "--- Noise System Stress Test ---");
@@ -62,6 +63,10 @@ void MapGenTest() {
     delete wordManager;
 }
 
+#include "SimulationWorld.h"
+#include "SimulationRenderer.h"
+#include "EntityIO.h"
+
 int main(int argc, char* argv[]) {
     std::string configPath = "config.json";
     if (argc > 1) {
@@ -72,13 +77,26 @@ int main(int argc, char* argv[]) {
     Logger::Init(Config::get<std::string>("system", "log_file"));
     Logger::Log(LogLevel::INFO, "Using config file: " + configPath);
 
-    // NoiseSystemTest();
-    MapGenTest();
+    // Run diagnostics tests first
+    run_neat_diagnostics_test();
+    run_entity_generation_and_movement_test();
 
-    // Flush Buffer at end of every loop
+    // Map generation test (export PNG)
+    MapGenTest();
     Logger::FlushBuffer();
 
-    // std::cout << "\nPress Enter to exit...";
-    // std::cin.get();
+    // Initialize Simulation World
+    int mapRadius = Config::get<int>("map", "radius");
+    int initialPopulation = 80;
+    int numInputs = eco::input_to_int(eco::EntityInput::NUM_INPUTS);
+    int numOutputs = eco::output_to_int(eco::EntityOutput::NUM_OUTPUTS);
+
+    eco::SimulationWorld world;
+    world.initialize(mapRadius, initialPopulation, numInputs, numOutputs);
+
+    // Launch Real-Time Visual Window
+    visualization::SimulationRenderer renderer(1400, 900, "HexLife - Artificial Life & Evolutionary Simulation");
+    renderer.run(world);
+
     return 0;
 }

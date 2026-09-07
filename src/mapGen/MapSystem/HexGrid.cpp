@@ -1,4 +1,4 @@
-﻿#include "HexGrid.h"
+#include "HexGrid.h"
 #include "Logger.h"
 
 namespace mapGen {
@@ -71,6 +71,10 @@ namespace mapGen {
     }
 
     std::unordered_map<Hex, Cell, HexHash> &HexGrid::getMap() {
+        return map;
+    }
+
+    const std::unordered_map<Hex, Cell, HexHash> &HexGrid::getMap() const {
         return map;
     }
 }

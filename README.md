@@ -30,12 +30,18 @@ cmake ..
 make
 ./HexLife ../config.json
 ```
+or just 
+```bash
+cd build/ | cmake .. | cd .. | cmake --build build -j
+```
+if build folder already exists.
+
 ## Road Map
-- [ ] Implement Cube Coordinate Hex System
+- [x] Implement Cube Coordinate Hex System
 
-- [ ] Procedural Map Generation (Perlin Noise)
+- [x] Procedural Map Generation (Perlin Noise)
 
-- [ ] Entity Metabolism and DNA Structs
+- [x] Entity Metabolism and DNA Structs
 
 - [ ] Neural Network Controller Integration
 

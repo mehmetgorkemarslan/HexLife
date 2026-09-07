@@ -13,5 +13,6 @@ namespace neat {
         void mutate_weights(Genome &genome);
         void add_node(Genome &genome);
         void add_connection(Genome &genome);
+        // perhaps also a remove connection and node function, but not now.
     };
 }

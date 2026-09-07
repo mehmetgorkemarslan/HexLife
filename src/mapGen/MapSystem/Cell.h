@@ -1,14 +1,11 @@
-﻿#pragma once
+#pragma once
 #include <vector>
 #include <sstream>
-#include "Common.h"
+#include "../Common.h"
+
+namespace eco { class Entity; }
 
 namespace mapGen {
-    /**
-     * @brief Forward declaration for Entity.
-     * @details Represents an actor or object that can occupy a Cell; full definition is elsewhere.
-     */
-    class Entity;
 
 
     /**
@@ -20,7 +17,7 @@ namespace mapGen {
         /** @brief Primary biome classification for this cell. */
         BiomeID biome;
 
-        std::vector<Entity *> entities;
+        std::vector<eco::Entity *> entities;
 
         float temperature = 0.0f;
         float moisture = 0.0f;
@@ -33,7 +30,7 @@ namespace mapGen {
          *
          * @param entity Pointer to the Entity to add.
          */
-        void addEntity(Entity *entity);
+        void addEntity(eco::Entity *entity);
 
         /**
          * @brief Remove the specified entity pointer from this cell.
@@ -43,7 +40,7 @@ namespace mapGen {
          *
          * @param entity Pointer to the Entity to remove.
          */
-        void removeEntity(Entity *entity);
+        void removeEntity(eco::Entity *entity);
 
 
         /**

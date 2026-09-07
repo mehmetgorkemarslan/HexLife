@@ -9,7 +9,9 @@ add_library(neat STATIC
         evolution/InnovationTracker.h
         evolution/Population.cpp
         evolution/Mutator.cpp
-        evolution/Mutator.h)
+        evolution/Mutator.h
+        evolution/Crossover.cpp
+)
 
 target_sources(neat PRIVATE
         phenotype/Network.cpp
@@ -18,7 +20,6 @@ target_sources(neat PRIVATE
 target_include_directories(neat
         PUBLIC
         ${PROJECT_SOURCE_DIR}/include
-        PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
